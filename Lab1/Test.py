@@ -12,11 +12,13 @@ from ZupaPomidorowa import ZupaPomidorowa
 
 class Test:
     def __init__(self):
-        self.przygotujZupe()
         self.kucharz = Kucharz()
         self.kelner = Kelner()
+        self.przygotujZupe()
+        self.przygotujZupePomidorowaZRyzemNaWynos()
+        self.przygotujZupePomidorowaZMakaronem()
 
-    def przygotuj(self, kucharz: IKucharz, kelner: IKelner):
+    # def przygotuj(self, kucharz: IKucharz, kelner: IKelner):
 
     def przygotujZupe(self):
         zupka = Zupa('rosol')
