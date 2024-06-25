@@ -1,3 +1,5 @@
+from Lab1.IKelner import IKelner
+from Lab1.IKucharz import IKucharz
 from Lab1.Kelner import Kelner
 from Lab1.KoncentratPomidorowy import KoncentratPomidorowy
 from Lab1.KostkaRosolowa import KostkaRosolowa
@@ -18,7 +20,20 @@ class Test:
         self.przygotujZupePomidorowaZRyzemNaWynos()
         self.przygotujZupePomidorowaZMakaronem()
 
-    # def przygotuj(self, kucharz: IKucharz, kelner: IKelner):
+    def przygotuj(self, kucharz: IKucharz, kelner: IKelner):
+        zupka = Zupa('rosol')
+        woda = Woda()
+        zupka.skladniki.append(woda)
+        kostka_rosolowa = KostkaRosolowa()
+        zupka.skladniki.append(kostka_rosolowa)
+        marchew = Marchewka()
+        zupka.skladniki.append(marchew)
+        makaron = Makaron()
+        zupka.skladniki.append(makaron)
+        kucharz.przygotuj(zupka)
+        kelner.nakryjStol()
+        kelner.podaj(zupka)
+        kelner.zbierzNaczynia()
 
     def przygotujZupe(self):
         zupka = Zupa('rosol')
@@ -61,3 +76,6 @@ class Test:
 
 
 t = Test()
+Marek = Kelner()
+Lukasz = Kucharz()
+t.przygotuj(Lukasz, Marek)
