@@ -1,0 +1,17 @@
+from Lab6.LewStates import LewContext
+
+lew = LewContext()
+print("==Zaczepiam lwa")
+lew.zaczep()
+print("==Karmię lwa")
+lew.nakarm()
+print("==Zaczepiam lwa")
+lew.zaczep()
+print("==Śpiewam lwu")
+lew.zaspiewaj()
+print("==Odbieram lwu jedzenie")
+lew.odbierz()
+print("==Śpiewam lwu")
+lew.zaspiewaj()
+print("==Odbieram lwu jedzenie")
+lew.odbierz()
