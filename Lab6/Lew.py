@@ -42,7 +42,6 @@ class Lew:
             print("Nie ma mu czego odebrać")
 
 
-# Interface in Python is usually represented by abstract base classes or simply by defining the required methods.
 class ILew:
     def zaczep(self):
         raise NotImplementedError
@@ -57,7 +56,6 @@ class ILew:
         raise NotImplementedError
 
 
-# Creating an instance of Lew and running the same sequence of operations as in Java
 lew = Lew()
 print("==Zaczepiam lwa")
 lew.zaczep()

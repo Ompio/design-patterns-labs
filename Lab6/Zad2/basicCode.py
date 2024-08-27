@@ -1,14 +1,19 @@
-from typing import List
+from __future__ import annotations
+from abc import ABC, abstractmethod
 
-# Abstract base class for police units
-class JednostkaPolicji:
-    pass
+class JednostkaPolicji(ABC):
+    @abstractmethod
+    def accept(self, V: Visitor) -> None:
+        pass
 
-# Derived classes with their specific attributes
 class KomendaGlowna(JednostkaPolicji):
     def __init__(self):
         self.komendant = "Papała"
-        self.obszar = (200, 100)  # Using tuple to represent dimension
+        self.obszar = (200, 100)
+
+    def accept(self, V: Visitor) -> None:
+        V.visit_komenda_glowna(self)
+
 
 class Posterunek(JednostkaPolicji):
     def __init__(self):
@@ -16,16 +21,25 @@ class Posterunek(JednostkaPolicji):
         self.dlugosc = 10
         self.szerokosc = 20
 
+    def accept(self, V: Visitor) -> None:
+        V.visit_posterunek(self)
+
 class ABW(JednostkaPolicji):
     def __init__(self):
         self.obszar = None  # Placeholder as in the original Java example
+
+    def accept(self, V: Visitor) -> None:
+        V.visit_abw(self)
 
 class Dzielnicowy(JednostkaPolicji):
     def __init__(self):
         self.nazwiskoDzielnicowego = "Kowalski"
         self.powierzchnia = 100.0
 
-# Main class to manage police units and operations
+    def accept(self, V: Visitor) -> None:
+        V.visit_dzielnicowy(self)
+
+
 class Test:
     def __init__(self):
         self.jednostki = []
@@ -33,43 +47,62 @@ class Test:
         self.jednostki.append(Posterunek())
         self.jednostki.append(KomendaGlowna())
         self.jednostki.append(ABW())
+        self.odwiedzajacySzefow = VisitorSzefow()
+        self.odwiedzajacyPowierzchni = VisitorPowierzchni()
 
     def wypiszSzefow(self):
         print("Szefowie jednostek:")
         for jednostka in self.jednostki:
-            if isinstance(jednostka, Dzielnicowy):
-                print(f"Dzielnicowy: {jednostka.nazwiskoDzielnicowego}")
-            elif isinstance(jednostka, Posterunek):
-                print(f"Posterunek: {jednostka.nazwiskoKomendanta}")
-            elif isinstance(jednostka, KomendaGlowna):
-                print(f"KG: {jednostka.komendant}")
-            elif isinstance(jednostka, ABW):
-                print("ABW: Nazwisko jest tajne!")
+            jednostka.accept(self.odwiedzajacySzefow)
 
     def wypiszPowierzchnie(self):
+        print("Powierzchnie jednostek:")
         for jednostka in self.jednostki:
-            if isinstance(jednostka, Dzielnicowy):
-                print(f"Dzielnica: {jednostka.powierzchnia}")
-            elif isinstance(jednostka, Posterunek):
-                print(f"Posterunek: {jednostka.szerokosc * jednostka.dlugosc}")
-            elif isinstance(jednostka, KomendaGlowna):
-                print(f"KG: {jednostka.obszar}")
-            elif isinstance(jednostka, ABW):
-                print("ABW: Cała Polska")
+            jednostka.accept(self.odwiedzajacyPowierzchni)
 
-# Visitor interface using Python's approach
-class Visitor:
+class Visitor(ABC):
+    @abstractmethod
+    def visit_dzielnicowy(self, jednostka: Dzielnicowy):
+        pass
 
-    def visit(self, jednostka: Dzielnicowy):
+    @abstractmethod
+    def visit_posterunek(self, jednostka: Posterunek):
+        pass
+
+    @abstractmethod
+    def visit_komenda_glowna(self, jednostka: KomendaGlowna):
+        pass
+
+    @abstractmethod
+    def visit_abw(self, jednostka: ABW):
+        pass
+
+
+class VisitorSzefow(Visitor):
+    def visit_dzielnicowy(self, jednostka: Dzielnicowy):
         print(f"Dzielnicowy: {jednostka.nazwiskoDzielnicowego}")
 
-    def visit(self, jednostka: Posterunek):
+    def visit_posterunek(self, jednostka: Posterunek):
         print(f"Posterunek: {jednostka.nazwiskoKomendanta}")
 
-    def visit(self, jednostka: KomendaGlowna):
+    def visit_komenda_glowna(self, jednostka: KomendaGlowna):
         print(f"KG: {jednostka.komendant}")
 
-    def visit(self, jednostka: ABW):
+    def visit_abw(self, jednostka: ABW):
+        print("ABW: Nazwisko jest tajne!")
+
+
+class VisitorPowierzchni(Visitor):
+    def visit_dzielnicowy(self, jednostka: Dzielnicowy):
+        print(f"Dzielnica: {jednostka.powierzchnia}")
+
+    def visit_posterunek(self, jednostka: Posterunek):
+        print(f"Posterunek: {jednostka.dlugosc * jednostka.szerokosc}")
+
+    def visit_komenda_glowna(self, jednostka: KomendaGlowna):
+        print(f"KG: {jednostka.obszar}")
+
+    def visit_abw(self, jednostka: ABW):
         print("ABW: Nazwisko jest tajne!")
 
 

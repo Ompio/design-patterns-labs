@@ -1,5 +1,5 @@
-from Lab5.Zad1.Auction import Auction
-from Lab5.Zad1.Client import Client
+from Lab5.Zad1.observer.Auction import Auction
+from Lab5.Zad1.observer.Client import Client
 
 
 class Start:
